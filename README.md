@@ -132,6 +132,22 @@ whattsapp_bot/
 ├── VERSION                 # Versión del proyecto (1.0.0)
 ├── bridge.js               # Bridge JavaScript → C++
 ├── .gitignore              # Exclusiones de seguridad
+├── .githooks/
+│   └── pre-push            # Hook que crea tag v$VERSION al pushear
+├── docs/
+│   ├── architecture.md     # Arquitectura detallada
+│   ├── commands.md         # Comandos de WhatsApp
+│   ├── customization.md    # Personalización del bot
+│   ├── protocol.md         # Protocolo NDJSON
+│   └── deployment.md       # Despliegue y systemd
+├── script_tools/
+│   ├── build.sh            # Compilar proyecto
+│   ├── run.sh              # Ejecutar gateway WhatsApp
+│   ├── test.sh             # Test rápido del binario
+│   ├── query.sh            # Enviar consulta de prueba
+│   ├── tag.sh              # Crear y pushear tag
+│   ├── status.sh           # Estado del proyecto
+│   └── clean.sh            # Limpiar build
 ├── src/
 │   ├── main.cpp            # Loop principal stdin/stdout
 │   ├── bridge_protocol.h   # Protocolo NDJSON
