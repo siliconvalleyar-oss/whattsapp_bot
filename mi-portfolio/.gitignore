@@ -1,0 +1,17 @@
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Dependencias
+node_modules/
+
+# Logs
+*.log
