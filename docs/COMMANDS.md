@@ -46,4 +46,4 @@ Todos los comandos se envían en el chat **"Message yourself"** (chat contigo mi
 
 ## Comportamiento del bot C++
 
-Los mensajes que **no** son comandos se envían al bot C++ para procesamiento. El bot responde automáticamente según las palabras clave detectadas (ver `docs/customization.md`).
+Los mensajes que **no** son comandos se envían al bot C++ para procesamiento. El bot responde automáticamente según las palabras clave detectadas (ver `CUSTOMIZATION.md`).

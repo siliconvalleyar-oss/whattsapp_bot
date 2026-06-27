@@ -41,6 +41,16 @@ Desktop.ini
 # ── Node ──
 node_modules/
 
+# ── Datos de clientes (database/) ──
+database/*.csv
+database/*.xlsx
+database/*.xls
+database/*.ods
+# Permitir archivos de ejemplo y documentación
+!database/*.sample.*
+!database/README.md
+!database/.gitkeep
+
 # ── Logs / Temp ──
 *.log
 *.tmp

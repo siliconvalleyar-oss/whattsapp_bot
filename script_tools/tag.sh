@@ -5,23 +5,30 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 cd "$PROJECT_DIR"
 
-VERSION="$(cat VERSION | tr -d '[:space:]')"
-TAG="v${VERSION}"
+CURRENT="$(cat VERSION | tr -d '[:space:]')"
 
-if git rev-parse "$TAG" >/dev/null 2>&1; then
-    echo "⚠️  El tag $TAG ya existe."
-    read -rp "¿Sobrescribir? (s/N): " CONFIRM
-    if [ "$CONFIRM" != "s" ] && [ "$CONFIRM" != "S" ]; then
-        echo "Cancelado."
-        exit 0
-    fi
-    git tag -d "$TAG"
-fi
+# Incrementar PATCH
+MAJOR="${CURRENT%%.*}"
+REST="${CURRENT#*.}"
+MINOR="${REST%.*}"
+PATCH="${REST#*.}"
+NEXT_PATCH="$((PATCH + 1))"
+NEXT="${MAJOR}.${MINOR}.${NEXT_PATCH}"
 
+echo "📌 Versión actual: $CURRENT"
+echo "⬆️  Nueva versión: $NEXT"
+echo ""
+
+# Guardar y commitear
+echo "$NEXT" > VERSION
+git add VERSION
+git commit -m "Bump version $CURRENT → $NEXT"
+
+TAG="v${NEXT}"
 echo "🏷️  Creando tag $TAG..."
 git tag "$TAG"
 
-echo "📤 Pusheando tag..."
-git push origin "$TAG"
+echo "📤 Pusheando commit y tag..."
+git push origin main --tags
 
 echo "✅ Tag $TAG pusheado correctamente."
