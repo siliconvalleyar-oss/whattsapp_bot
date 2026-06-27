@@ -1,38 +1,22 @@
 #!/bin/sh
-# Pre-push hook:
-#   1. Incrementa PATCH en VERSION
-#   2. Ammend al último commit (incorpora el cambio en lo que se va a pushear)
-#   3. Crea tag vVERSION
+# Pre-push hook: crea tag vVERSION si no existe todavía
 set -e
 
-ROOT="$(git rev-parse --show-toplevel)"
-VERSION_FILE="$ROOT/VERSION"
+while read -r local_ref local_oid remote_ref remote_oid; do
+    case "$remote_ref" in
+        refs/heads/*) ;;
+        *) continue ;;
+    esac
 
-CURRENT="$(cat "$VERSION_FILE" 2>/dev/null | tr -d '[:space:]')"
-if [ -z "$CURRENT" ]; then
-    echo "pre-push: VERSION file is empty, cannot bump"
-    exit 1
-fi
+    ROOT="$(git rev-parse --show-toplevel)"
+    VERSION="$(cat "$ROOT/VERSION" 2>/dev/null | tr -d '[:space:]')"
+    [ -z "$VERSION" ] && { echo "pre-push: VERSION is empty"; exit 1; }
 
-MAJOR="${CURRENT%%.*}"
-REST="${CURRENT#*.}"
-MINOR="${REST%.*}"
-PATCH="${REST#*.}"
-NEXT_PATCH="$((PATCH + 1))"
-NEXT="${MAJOR}.${MINOR}.${NEXT_PATCH}"
-
-echo "pre-push: bumping VERSION $CURRENT → $NEXT"
-echo "$NEXT" > "$VERSION_FILE"
-
-git add "$VERSION_FILE"
-
-# Amend al último commit para que el cambio viaje en el push
-git commit --amend --no-edit --allow-empty
-
-TAG="v${NEXT}"
-if git rev-parse "$TAG" >/dev/null 2>&1; then
-    echo "pre-push: tag $TAG already exists, skipping tag creation"
-else
-    echo "pre-push: creating tag $TAG"
-    git tag "$TAG"
-fi
+    TAG="v${VERSION}"
+    if git rev-parse "$TAG" >/dev/null 2>&1; then
+        echo "pre-push: tag $TAG already exists"
+    else
+        echo "pre-push: creating tag $TAG"
+        git tag "$TAG"
+    fi
+done
