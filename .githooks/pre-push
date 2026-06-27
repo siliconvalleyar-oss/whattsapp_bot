@@ -1,7 +1,7 @@
 #!/bin/sh
 # Pre-push hook:
 #   1. Incrementa PATCH en VERSION
-#   2. Commitea el cambio
+#   2. Ammend al último commit (incorpora el cambio en lo que se va a pushear)
 #   3. Crea tag vVERSION
 set -e
 
@@ -14,7 +14,6 @@ if [ -z "$CURRENT" ]; then
     exit 1
 fi
 
-# Incrementar PATCH: X.Y.Z -> X.Y.(Z+1)
 MAJOR="${CURRENT%%.*}"
 REST="${CURRENT#*.}"
 MINOR="${REST%.*}"
@@ -27,10 +26,8 @@ echo "$NEXT" > "$VERSION_FILE"
 
 git add "$VERSION_FILE"
 
-# Si hay cambios sin commit, los commiteamos
-if ! git diff --cached --quiet; then
-    git commit -m "Bump version $CURRENT → $NEXT"
-fi
+# Amend al último commit para que el cambio viaje en el push
+git commit --amend --no-edit --allow-empty
 
 TAG="v${NEXT}"
 if git rev-parse "$TAG" >/dev/null 2>&1; then
