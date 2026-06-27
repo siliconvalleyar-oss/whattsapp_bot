@@ -1,0 +1,15 @@
+#!/bin/sh
+# Pre-push hook: crea tag automático basado en VERSION
+VERSION=$(cat "$(git rev-parse --show-toplevel)/VERSION" 2>/dev/null | tr -d '[:space:]')
+if [ -z "$VERSION" ]; then
+    echo "pre-push: VERSION file is empty, skipping tag"
+    exit 0
+fi
+
+TAG="v${VERSION}"
+if git rev-parse "$TAG" >/dev/null 2>&1; then
+    echo "pre-push: tag $TAG already exists, skipping"
+else
+    echo "pre-push: creating tag $TAG"
+    git tag "$TAG"
+fi
