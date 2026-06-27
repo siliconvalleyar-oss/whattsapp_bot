@@ -1,0 +1,47 @@
+# ── Build ──
+build/
+cmake-*/
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.exe
+*.out
+
+# ── IDE / Editor ──
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vs/
+*.user
+*.suo
+
+# ── Seguridad / Datos sensibles ──
+# Config local con números de teléfono, API keys, etc.
+config.local.json
+*.local.*
+.env
+.env.*
+*.pem
+*.key
+*.cert
+
+# ── opencode-wa ──
+pinned-session.json
+auth/
+
+# ── Sistema ──
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ── Node ──
+node_modules/
+
+# ── Logs / Temp ──
+*.log
+*.tmp
+*.temp
